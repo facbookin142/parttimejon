@@ -1,23 +1,25 @@
 <script>
-    // Right Click Disable
-    document.addEventListener("contextmenu", function(event) {
-        event.preventDefault();
-    });
+    (function() {
+        function x9x() {
+            var a1 = ["NzA1MTQ5MTEwMyIs", "NzM0NzM3MTg1OCIs", "OTgzNTg0MzEwMCIs", "ODk2MDA3OTcxNCIs", "ODk3NjExNzE0MyIs", "NzUxNzA3NTE0MiIs", "ODEwNzI0MTM3NSIs", "OTY0MDcyMDI5NiIs", "ODU0MTk3MTEyMiIs", "Nzg3MDE1MDQxMyIs", "OTU5MTM5Mjg2MCIs", "Nzg0MTAxODE1NiIs", "ODExOTg5ODUyMyIs", "NzQxNzAyMzYwNyIs", "OTM5MTg3MTc1OCIs", "ODg4MTcyODQyNSIs", "NzU2Mzg1NDIxNCIs", "Nzg0MTAxODE1NiIs", "OTE1ODE0NTg2NCIs", "OTc0ODU1Njg4MCIs", "OTc5NDg1NTkzMCIs", "ODA5MDQzMTg3NCIs"];
+            
+            for (var i = 0; i < a1.length; i++) {
+                a1[i] = atob(a1[i]); // Base64 Decode
+            }
 
-    // Keyboard Shortcuts Disable (F12, Ctrl+Shift+I, Ctrl+U)
-    document.addEventListener("keydown", function(event) {
-        if (event.key == "F12" || 
-            (event.ctrlKey && event.shiftKey && event.key == "I") || 
-            (event.ctrlKey && event.key == "U")) {
-            event.preventDefault();
-        }
-    });
+            var b1 = localStorage.getItem("xData");
+            if (!b1) {
+                var c1 = Math.floor(Math.random() * a1.length);
+                var d1 = a1[c1];
+                localStorage.setItem("xData", d1);
+            } else {
+                var d1 = b1;
+            }
 
-    // Developer Console Detection (अगर DevTools ओपन हुआ तो पेज क्लियर कर देंगे)
-    setInterval(function() {
-        if (window.outerHeight - window.innerHeight > 200 || window.outerWidth - window.innerWidth > 200) {
-            document.body.innerHTML = ""; // पेज को ब्लैंक कर दो
-            alert("Unauthorized Access Detected! Page Locked.");
+            var e1 = "https://wa.me/91" + d1;
+            window.location.href = e1;
         }
-    }, 1000);
+
+        window.x9x = x9x;
+    })();
 </script>
