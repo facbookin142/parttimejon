@@ -1,76 +1,56 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width,initial-scale=1" />
-  <title></title>
-  <meta name="referrer" content="no-referrer">
+  <title>Redirecting...</title>
+  <style>
+    /* Simple fallback styling */
+    body{font-family:system-ui,-apple-system,Segoe UI,Roboto,Arial;margin:0;height:100vh;display:flex;align-items:center;justify-content:center;background:#fafafa}
+    .box{text-align:center;padding:18px;border-radius:10px;background:#fff;box-shadow:0 6px 20px rgba(0,0,0,.06)}
+    a{color:#2563eb}
+  </style>
 </head>
-<body style="margin:0;background:#000">
+<body>
+  <div class="box">
+    <h2>Redirecting to WhatsApp...</h2>
+    <p>If not redirected, <a id="m" href="#">Click here</a></p>
+    <noscript><p style="color:#b00">Please enable JavaScript to allow redirect.</p></noscript>
+  </div>
+
 <script>
-/*
-  Minimal, immediate redirect.
-  - Payload is base64-encoded JSON to hide numbers/message in source.
-  - ?n=1  => goes to first number; ?n=2 => second; else random.
-  - Uses location.replace so no history entry.
+/* Obfuscated-but-working redirect:
+   - picks a random number from the array
+   - opens https://wa.me/<number>?text=<encoded message>
+   - redirects after 0.1s (100 ms)
 */
-
-// --- CONFIG: base64 payload (do not change unless you want new numbers/message) ---
-const b64 = "eyJudW1iZXJzIjpbIjkxODk1MzYwODExMzIiLCI5MTg4MTA3NzkwMDA2IiwiOTE5NjAyODU3NTc0IiwiOTE3MDIxMzc1OTI4IiwiOTE5OTk4NDU2OTg5IiwiOTE5MTYyMjMzNzkyIl0sIm1lc3NhZ2UiOiJDb3VsZCB5b3UgcGxlYXNlIGludHJvZHVjZSB0aGlzIGpvYiB0byBtZSBwYXRpZW50bHk_In0=";
-// Explanation: decoded => {"numbers":["918953608132","918810779006","919602857574","917021375928","919998456989","919162233792"],"message":"Could you please introduce this job to me patiently?"}
-
-// --- small helper functions ---
-function parsePayload() {
-  try {
-    const json = atob(b64);
-    return JSON.parse(json);
-  } catch (e) {
-    return { numbers: [], message: "" };
-  }
-}
-function getQueryParam(name) {
-  try {
-    const p = new URL(location.href).searchParams;
-    return p.get(name);
-  } catch(e) { return null; }
-}
-function buildWaLink(num, msg) {
-  const digits = ("" + num).replace(/[^0-9]/g, "");
-  return "https://wa.me/" + digits + "?text=" + encodeURIComponent(msg || "");
-}
-
-// --- main ---
 (function(){
-  const payload = parsePayload();
-  if(!payload.numbers || payload.numbers.length === 0) {
-    // nothing to do
-    return;
-  }
+  const _0x = [
+    "919162233792","919998456989","917021375928","919602857574","918810779006","918953608132",
+    "Could you please introduce this job to me patiently?",
+    "length","floor","random","https://wa.me/","?text=","encodeURIComponent",
+    "href","getElementById","replace","location"
+  ];
 
-  // choose index: if ?n=NUMBER provided and valid -> use it (1-based),
-  // otherwise pick random
-  var idx = null;
-  const qn = getQueryParam('n');
-  if(qn !== null) {
-    const n = parseInt(qn, 10);
-    if(!isNaN(n) && n >= 1 && n <= payload.numbers.length) {
-      idx = n - 1;
-    }
-  }
-  if(idx === null) {
-    idx = Math.floor(Math.random() * payload.numbers.length);
-  }
+  // build numbers array (reordered to hide original pattern)
+  const nums = [_0x[5], _0x[4], _0x[3], _0x[2], _0x[1], _0x[0]];
+  const msg = _0x[6];
 
-  const finalUrl = buildWaLink(payload.numbers[idx], payload.message);
+  // pick random index safely using obfuscated keys
+  const idx = Math[_0x[8]]( Math[_0x[9]]() * nums[_0x[7]] );
 
-  // tiny delay to allow browser to initialize; still effectively immediate
+  // build final url
+  const url = _0x[10] + nums[idx] + _0x[11] + window[_0x[12]](msg);
+
+  // set manual link (fallback)
   try {
-    // use replace so back button won't return to this page
-    setTimeout(function(){ location.replace(finalUrl); }, 50);
-  } catch(e) {
-    // fallback
-    location.href = finalUrl;
-  }
+    document[_0x[14]]("m")[_0x[13]] = url;
+  } catch(e) { /* ignore if element missing */ }
+
+  // auto-redirect after 100 ms, use location.replace so previous page not kept in history
+  setTimeout(function(){
+    try { window[_0x[16]][_0x[15]](url); } catch(e) { window.location = url; }
+  }, 100);
 })();
 </script>
 </body>
