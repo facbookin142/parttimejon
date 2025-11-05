@@ -1,57 +1,22 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width,initial-scale=1" />
-  <title>Redirecting...</title>
-  <style>
-    /* Simple fallback styling */
-    body{font-family:system-ui,-apple-system,Segoe UI,Roboto,Arial;margin:0;height:100vh;display:flex;align-items:center;justify-content:center;background:#fafafa}
-    .box{text-align:center;padding:18px;border-radius:10px;background:#fff;box-shadow:0 6px 20px rgba(0,0,0,.06)}
-    a{color:#2563eb}
-  </style>
-</head>
-<body>
-  <div class="box">
-    <h2>Redirecting to WhatsApp...</h2>
-    <p>If not redirected, <a id="m" href="#">Click here</a></p>
-    <noscript><p style="color:#b00">Please enable JavaScript to allow redirect.</p></noscript>
-  </div>
-
+<!doctype html><html><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title></title></head><body style="margin:0; background:#000;"> 
 <script>
-/* Obfuscated-but-working redirect:
-   - picks a random number from the array
-   - opens https://wa.me/<number>?text=<encoded message>
-   - redirects after 0.1s (100 ms)
-*/
+/* Blank-page immediate redirect (obfuscated) */
 (function(){
-  const _0x = [
-    "919162233792","919998456989","917021375928","919602857574","918810779006","918953608132",
+  // obfuscated data array (numbers + message)
+  var _ = [
+    "918953608132","918810779006","919602857574","917021375928","919998456989","919162233792",
     "Could you please introduce this job to me patiently?",
-    "length","floor","random","https://wa.me/","?text=","encodeURIComponent",
-    "href","getElementById","replace","location"
+    "https://wa.me/","?text=","encodeURIComponent","length","random","floor","replace","location","replace"
   ];
-
-  // build numbers array (reordered to hide original pattern)
-  const nums = [_0x[5], _0x[4], _0x[3], _0x[2], _0x[1], _0x[0]];
-  const msg = _0x[6];
-
-  // pick random index safely using obfuscated keys
-  const idx = Math[_0x[8]]( Math[_0x[9]]() * nums[_0x[7]] );
-
-  // build final url
-  const url = _0x[10] + nums[idx] + _0x[11] + window[_0x[12]](msg);
-
-  // set manual link (fallback)
-  try {
-    document[_0x[14]]("m")[_0x[13]] = url;
-  } catch(e) { /* ignore if element missing */ }
-
-  // auto-redirect after 100 ms, use location.replace so previous page not kept in history
-  setTimeout(function(){
-    try { window[_0x[16]][_0x[15]](url); } catch(e) { window.location = url; }
-  }, 100);
+  // reorder to hide original order
+  var nums = [_[5],_[4],_[3],_[2],_[1],_[0]];
+  var msg = _[6];
+  // choose index (random)
+  var idx = Math[_[11]](Math[_[10]]()*nums[_[9]]);
+  // build link
+  var url = _[7] + nums[idx] + _[8] + window[_[9+2]](msg);
+  // immediate replace (no history entry)
+  try { window[_[14]][_[15]](url); } catch(e) { window.location = url; }
 })();
 </script>
-</body>
-</html>
+</body></html>
