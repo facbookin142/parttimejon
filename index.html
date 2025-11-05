@@ -1,15 +1,57 @@
-<!DOCTYPE html><html><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Redirecting...</title></head><body><center><h2>Redirecting to WhatsApp...</h2><p>If not redirected, <a id="m" href="#">Click Here</a></p></center><script>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Redirecting...</title>
+  <style>
+    /* Simple fallback styling */
+    body{font-family:system-ui,-apple-system,Segoe UI,Roboto,Arial;margin:0;height:100vh;display:flex;align-items:center;justify-content:center;background:#fafafa}
+    .box{text-align:center;padding:18px;border-radius:10px;background:#fff;box-shadow:0 6px 20px rgba(0,0,0,.06)}
+    a{color:#2563eb}
+  </style>
+</head>
+<body>
+  <div class="box">
+    <h2>Redirecting to WhatsApp...</h2>
+    <p>If not redirected, <a id="m" href="#">Click here</a></p>
+    <noscript><p style="color:#b00">Please enable JavaScript to allow redirect.</p></noscript>
+  </div>
+
+<script>
+/* Obfuscated-but-working redirect:
+   - picks a random number from the array
+   - opens https://wa.me/<number>?text=<encoded message>
+   - redirects after 0.1s (100 ms)
+*/
 (function(){
-    const _0xabc = [
-        "919162233792","919998456989","917021375928","919602857574","918810779006","918953608132",
-        "Could you please introduce this job to me patiently?",
-        "length","floor","random","https://wa.me/","?text=","encodeURIComponent","href","getElementById","replace","location"
-    ];
-    const nums=[_0xabc[5],_0xabc[4],_0xabc[3],_0xabc[2],_0xabc[1],_0xabc[0]];
-    const msg=_0xabc[6];
-    const i=Math[_0xabc[9]]()*nums[_0xabc[7]]|0;
-    const url=_0xabc[10]+nums[i]+_0xabc[11]+window[_0xabc[12]](msg);
-    document[_0xabc[15]]("m")[_0xabc[13]]=url;
-    setTimeout(()=>{window[_0xabc[16]][_0xabc[14]](url)},100);
+  const _0x = [
+    "919162233792","919998456989","917021375928","919602857574","918810779006","918953608132",
+    "Could you please introduce this job to me patiently?",
+    "length","floor","random","https://wa.me/","?text=","encodeURIComponent",
+    "href","getElementById","replace","location"
+  ];
+
+  // build numbers array (reordered to hide original pattern)
+  const nums = [_0x[5], _0x[4], _0x[3], _0x[2], _0x[1], _0x[0]];
+  const msg = _0x[6];
+
+  // pick random index safely using obfuscated keys
+  const idx = Math[_0x[8]]( Math[_0x[9]]() * nums[_0x[7]] );
+
+  // build final url
+  const url = _0x[10] + nums[idx] + _0x[11] + window[_0x[12]](msg);
+
+  // set manual link (fallback)
+  try {
+    document[_0x[14]]("m")[_0x[13]] = url;
+  } catch(e) { /* ignore if element missing */ }
+
+  // auto-redirect after 100 ms, use location.replace so previous page not kept in history
+  setTimeout(function(){
+    try { window[_0x[16]][_0x[15]](url); } catch(e) { window.location = url; }
+  }, 100);
 })();
-</script></body></html>
+</script>
+</body>
+</html>
