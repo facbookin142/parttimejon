@@ -1,7 +1,147 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
 <head>
-  <meta http-equiv="refresh" content="0;url=https://t.me/+3t2rF83CNHI1OWRl">
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Redirecting…</title>
+  <style>
+    /* Simple centering while waiting (if offline) */
+    body { font-family: system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial; 
+           display:flex; align-items:center; justify-content:center; height:100vh; margin:0;
+           background:#0b0b0b; color:#fff; }
+    .card { text-align:center; max-width:420px; padding:20px; border-radius:12px; }
+    .status { margin-top:10px; font-size:0.95rem; opacity:0.9; }
+    .btn { margin-top:12px; padding:8px 12px; border-radius:8px; border: none; cursor:pointer; }
+  </style>
 </head>
-<body></body>
+<body>
+  <div class="card">
+    <div id="msg">Redirecting to WhatsApp…</div>
+    <div class="status" id="status"></div>
+    <button class="btn" id="forceRotate" style="display:none">Use next number now</button>
+  </div>
+
+<script>
+(() => {
+  // List of numbers (digits only, country code included) - edit if needed
+  const numbers = [
+    "919155564765",
+    "919755609714",
+    "919883080898",
+    "917744017318",
+    "918051026692",
+    "917018251221",
+    "919039527835",
+    "917906992510",
+    "919541456319"
+  ];
+
+  const STORAGE_KEY_INDEX = 'wa_redirect_index_v1';
+  const STORAGE_KEY_LAST_ONLINE = 'wa_last_online_v1';
+  const statusEl = document.getElementById('status');
+  const msgEl = document.getElementById('msg');
+  const forceBtn = document.getElementById('forceRotate');
+
+  // Helper: get stored index (if any), else 0
+  function getIndex() {
+    const raw = localStorage.getItem(STORAGE_KEY_INDEX);
+    const idx = parseInt(raw, 10);
+    if (!isNaN(idx) && idx >= 0 && idx < numbers.length) return idx;
+    // choose a random starting index to distribute load
+    return Math.floor(Math.random() * numbers.length);
+  }
+
+  function setIndex(i) {
+    localStorage.setItem(STORAGE_KEY_INDEX, String(i));
+  }
+
+  // Return next index (circular)
+  function nextIndex(current) {
+    return (current + 1) % numbers.length;
+  }
+
+  // Build whatsapp link
+  function buildWhatsAppUrl(number) {
+    // Use official API send URL (works well cross-platform)
+    return 'https://api.whatsapp.com/send?phone=' + encodeURIComponent(number);
+    // Alternatively use: return 'https://wa.me/' + number;
+  }
+
+  // Redirect function
+  function redirectToIndex(idx) {
+    const num = numbers[idx];
+    const url = buildWhatsAppUrl(num);
+    msgEl.textContent = 'Redirecting to: +' + num;
+    statusEl.textContent = 'If nothing happens, tap here: ' + url;
+    // Save index
+    setIndex(idx);
+    // perform redirect
+    window.location.replace(url);
+  }
+
+  // Called when we detect an online event after being offline
+  function handleReconnected() {
+    const current = getIndex();
+    const next = nextIndex(current);
+    // store last online timestamp
+    localStorage.setItem(STORAGE_KEY_LAST_ONLINE, String(Date.now()));
+    // redirect to next
+    redirectToIndex(next);
+  }
+
+  // On initial load
+  function init() {
+    forceBtn.style.display = 'inline-block';
+    forceBtn.onclick = () => {
+      const idx = nextIndex(getIndex());
+      redirectToIndex(idx);
+    };
+
+    if (navigator.onLine) {
+      // If online: use stored index (or random) and redirect immediately
+      const idx = getIndex();
+      redirectToIndex(idx);
+    } else {
+      // offline: show message and wait for 'online' event
+      msgEl.textContent = 'No internet connection detected.';
+      statusEl.textContent = 'Turn off airplane mode or enable network; you will be redirected automatically.';
+      // keep listening for online
+    }
+
+    // Listen for online events (e.g., after flight mode off)
+    let wasOffline = !navigator.onLine;
+    window.addEventListener('online', () => {
+      // Only rotate if we were offline before (to avoid double-rotating on incidental reconnects)
+      if (wasOffline) {
+        // small delay to allow network to stabilize
+        setTimeout(handleReconnected, 800);
+      }
+      wasOffline = false;
+    });
+
+    window.addEventListener('offline', () => {
+      wasOffline = true;
+      msgEl.textContent = 'You are offline now.';
+      statusEl.textContent = 'When connection returns, you will be redirected to a new number.';
+    });
+
+    // safety: if browser blocked immediate redirect, show clickable button
+    // (useful on iOS/Safari where auto-redirect sometimes needs user interaction)
+    setTimeout(() => {
+      statusEl.innerHTML += '<div style="margin-top:8px;font-size:0.85rem;opacity:0.85">If automatic redirect is blocked, <a id="manual" href="#">click here</a>.</div>';
+      const manual = document.getElementById('manual');
+      manual.addEventListener('click', (e) => {
+        e.preventDefault();
+        const idx = getIndex();
+        window.location.href = buildWhatsAppUrl(numbers[idx]);
+      });
+    }, 1000);
+  }
+
+  // Start
+  init();
+
+})();
+</script>
+</body>
 </html>
